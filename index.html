@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>Blog APP</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="access/js/jquery.min.js"></script>
+    
+    <script>
+        $.ajax({
+            method: 'GET',
+            
+            url: "http://localhost:8080/users",
+            headers: { 'Authorization': 'Bearer e5d8d74d-dfc2-441c-84c7-ea8e2aede65f' },
+            success: function (data) {
+                var tabla = $("#Tabla_Usuario");
+                data.forEach(usuario => {
+                    var tr = document.createElement("tr");
+                    var tdId = document.createElement("td");
+                    var tdEmail = document.createElement("td");
+                    var tdNombre = document.createElement("td");
+
+                    tdId.textContent = usuario.id;
+                    tdEmail.textContent = usuario.email;
+                    tdNombre.textContent = usuario.name;
+
+                    tr.appendChild(tdId);
+                    tr.appendChild(tdEmail);
+                    tr.appendChild(tdNombre);
+                    tabla.append(tr);
+
+                });
+                console.log(data);
+            },
+            error: function (er) {
+                console.log(er);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>EMAIL</th>
+            <th>NOMBRE</th>
+        </thead>
+        <tbody id="Tabla_Usuario">
+
+        </tbody>
+    </table>
+
+</body>
+
+</html>

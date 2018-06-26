@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <title>Blog Appi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="image/icons/Blog-logo.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        .form-control:focus {
+            border-color: black;
+            box-shadow: 0 0 1em black;
+            -webkit-box-shadow: 0 0 1em black;
+        }
+    </style>
+    <style>
+        /*input:-webkit-autofill { -webkit-text-fill-color: white !important; box-shadow:0 0 1em black!important; -webkit-box-shadow: 0 0 0 25px black inset !important;}*/
+    </style>
+    <script src="access/js/jquery.min.js"></script>
+
+    <script>
+        function LimpiarInputs() {
+            $('input[type="email"]').val('');
+            $('input[type="password"]').val(''); 
+        }
+        
+        $(function () {
+            $("#button").click(function (e) {
+                e.preventDefault();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                $.ajax({
+                    method: 'GET',
+                    url: "http://localhost:8080/",
+                    headers: { 'Authorization': 'Bearer e5d8d74d-dfc2-441c-84c7-ea8e2aede65f' },
+                    success: function (data) {
+                        var BreakException = {};
+                        data.forEach(usuario => {
+                            if (email != usuario.email) {
+                                alert("Correo electronico no registrado.");
+                                throw BreakException;
+                            }
+                        });
+                        $.ajax({
+                            method: "POST",
+                            url: "http://localhost:8080/login",
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({ "email": email, "password": password }),
+                            success: function (data) {
+                                console.log(data);
+                                LimpiarInputs();
+                                //INVOCAR LA PAGINA DE LONGIN
+                            },
+                            error: function (er) {
+                                console.log(er);
+                            }
+                        });
+
+                    },
+                    error: function (er) {
+                        console.log(er);
+                    }
+                });
+
+
+
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4"></div>
+
+
+            <div class="col-lg-8">
+                <form class="form-signin ">
+                    <div class="form-group col-lg-6">
+                        <br />
+                        <br />
+                        <h1 style="text-align: center">
+                            <img src="image/png/Blog-logo.png" width="72" height="72">Iniciar sección</h1>
+                        <label class="h3 mb-3 font-weight-center">Usuario</label>
+                        <input type="email" autocomplete="on" style="text-align: center" id="email" class="form-control" placeholder="Correo electrónico"
+                            required autofocus>
+
+                        <br />
+                        <label class="h3 mb-3 font-weight-center">Contraseña</label>
+                        <input type="password" id="password" class="form-control" class="input">
+                        <br />
+                        <p align="initial">
+                            <a href="signup.html" style="font-size: 18px; text-decoration-color: black; color: black">
+                                <b>Registrate</b>
+                            </a>
+                        </p>
+                        <br />
+                        <button id="button" class="btn btn-lg btn-primary btn-block " style=" background-color: black; border-color: black" type="submit">Log in</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+
+</body>
+
+</html>
